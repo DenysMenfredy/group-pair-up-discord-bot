@@ -81,6 +81,6 @@ class MyClient(Client):
 
 
     # @commands.Cog.listener()
-    async def delete_all_channels(self, ctx):
-        for channel in ctx.guild.channels:
-            await channel.delete()
+    # async def delete_all_channels(self, ctx):
+    #     for channel in ctx.guild.channels:
+    #         await channel.delete()
