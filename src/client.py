@@ -14,35 +14,34 @@ class MyClient(Client):
         print('Logged on as', self.user)
 
     async def setup_group(self, ctx, **args):
-        try:
-            guild = discord.utils.get(self.guilds, name=self.guild_name)
-            category = await guild.create_category(args['group_name'], overwrites=None, reason=None)
-
-            await guild.create_text_channel("texto", overwrites=None, category=category, reason=None)
-            await guild.create_voice_channel("voz", overwrites=None, category=category, reason=None)
             
-
-            time = list(args['timestamp'].timetuple())
-            sender_id = args['sender'].id
-            group_collection = {
-                "name": args['group_name'],
-                "members": args['members'],
-                "timestamp": time,
-                "creator_id": sender_id,
-            }
-            try:
-                self.db.create_group(group_collection)
-            except Exception as e:
-                print(e)
-                await ctx.send(e.args[0])
-                return
-            await ctx.send(f"Grupo **{args['group_name']}** criado com sucesso pelo usuário <@{sender_id}> no dia {time[2]}/{time[1]}/{time[0]}")
-
+        time = list(args['timestamp'].timetuple())
+        sender_id = args['sender'].id
+        group_collection = {
+            "name": args['group_name'],
+            "members": args['members'],
+            "timestamp": time,
+            "creator_id": sender_id,
+        }
+        try:
+            self.db.create_group(group_collection)
+            await self.make_group(ctx, ctx.guild, args['group_name'])
         except Exception as e:
             print(e)
-            print(f"Error creating group...: {e}")
-            await ctx.send("Desculpe, houve um erro ao criar o grupo.")
+            await ctx.send(e.args[0])
+            return
+        await ctx.send(f"Grupo **{args['group_name']}** criado com sucesso pelo usuário <@{sender_id}> no dia {time[2]}/{time[1]}/{time[0]}")
 
+
+
+    async def make_group(self, ctx, guild, group_name):
+        try:
+            category = await guild.create_category(args['group_name'], overwrites=None, reason=None)
+            await guild.create_text_channel("texto", overwrites=None, category=category, reason=None)
+            await guild.create_voice_channel("voz", overwrites=None, category=category, reason=None)
+        except Exception as e:
+            print(e)
+            await ctx.send("Erro ao criar grupo")
 
     async def list_users_from_server(self, ctx):
         server_id = ctx.guild.id
