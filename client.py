@@ -18,20 +18,9 @@ class MyClient(Client):
             guild = discord.utils.get(self.guilds, name=self.guild_name)
             category = await guild.create_category(args['group_name'], overwrites=None, reason=None)
 
-            text_channel = await guild.create_text_channel("texto", overwrites=None, category=category, reason=None)
-            voice_channel = await guild.create_voice_channel("voz", overwrites=None, category=category, reason=None)
+            await guild.create_text_channel("texto", overwrites=None, category=category, reason=None)
+            await guild.create_voice_channel("voz", overwrites=None, category=category, reason=None)
             
-            # await self.set_channel_permissions(ctx.guild.me, text_channel, {'read_messages': True, 'send_messages': True})
-            # await self.set_channel_permissions(ctx.guild.me, voice_channel, {'read_messages': True, 'send_messages': True})
-
-
-            for member_id in args['members']:
-                print(member_id)
-                member = ctx.guild.fetch_member(member_id)
-                print(member)
-                await self.set_channel_permissions(member, text_channel, {'read_messages': True, 'send_messages': True})
-                await self.set_channel_permissions(member, voice_channel, {'read_messages': True, 'send_messages': True})
-                await self.set_channel_permissions(member, category, {'read_messages': True, 'send_messages': True})
 
             time = list(args['timestamp'].timetuple())
             sender_id = args['sender'].id
