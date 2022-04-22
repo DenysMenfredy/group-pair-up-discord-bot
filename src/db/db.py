@@ -52,7 +52,9 @@ class DB:
 
     
     def create_group(self, group):
-        if self.get_collection('groups').find_one({"creator_id": group["creator_id"]}):
+        admins_id = self.get_collection('admins').find().distinct('discord_id')
+        print(admins_id)
+        if not group["creator_id"] in admins_id and self.get_collection('groups').find_one({"creator_id": group["creator_id"]}):
             raise Exception(f"Usurário <@{group['creator_id']}> já possui um grupo")
         if self.get_collection('groups').find_one({"name": group["name"]}):
             raise Exception(f"Grupo **{group['name']}** já existe")
