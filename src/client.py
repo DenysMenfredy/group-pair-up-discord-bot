@@ -17,6 +17,7 @@ class MyClient(Client):
             
         time = list(args['timestamp'].timetuple())
         sender_id = args['sender'].id
+        group_name = args['group_name']
         group_collection = {
             "name": args['group_name'],
             "members": args['members'],
@@ -25,7 +26,7 @@ class MyClient(Client):
         }
         try:
             self.db.create_group(group_collection)
-            await self.make_group(ctx, ctx.guild, args['group_name'])
+            await self.make_group(ctx, ctx.guild, group_name)
         except Exception as e:
             print(e)
             await ctx.send(e.args[0])
@@ -67,7 +68,7 @@ class MyClient(Client):
         if message.content == 'ping':
             await message.channel.send('pong')
 
-        if message.content.startswith('!pairup'):
+        if message.content.startswith('!make-group'):
             message_content = parse_message(message)
             print(message_content)
             await self.setup_group(message.channel, **message_content)
@@ -75,11 +76,3 @@ class MyClient(Client):
         if message.content.startswith('!list_users'):
             await self.list_users_from_server(message)
 
-        if message.content.startswith('!delete_all_channels'):
-            await self.delete_all_channels(message)
-
-
-    # @commands.Cog.listener()
-    # async def delete_all_channels(self, ctx):
-    #     for channel in ctx.guild.channels:
-    #         await channel.delete()
