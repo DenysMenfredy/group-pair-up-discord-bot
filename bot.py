@@ -9,4 +9,6 @@ GUILD = os.getenv('DISCORD_GUILD')
 
 client = MyClient(guild_name=GUILD)
 
+# client.delete_all_channels()
+
 client.run(TOKEN)
