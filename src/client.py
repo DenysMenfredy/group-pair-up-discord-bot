@@ -37,7 +37,7 @@ class MyClient(Client):
 
     async def make_group(self, ctx, guild, group_name):
         try:
-            category = await guild.create_category(args['group_name'], overwrites=None, reason=None)
+            category = await guild.create_category(group_name, overwrites=None, reason=None)
             await guild.create_text_channel("texto", overwrites=None, category=category, reason=None)
             await guild.create_voice_channel("voz", overwrites=None, category=category, reason=None)
         except Exception as e:
