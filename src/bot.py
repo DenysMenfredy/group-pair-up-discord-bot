@@ -7,8 +7,9 @@ load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
 
-client = MyClient(guild_name=GUILD)
 
-# client.delete_all_channels()
+intents = discord.Intents().all()
+client = MyClient(guild_name=GUILD, intents=intents)
+
 
 client.run(TOKEN)

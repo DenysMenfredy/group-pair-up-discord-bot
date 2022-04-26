@@ -50,6 +50,8 @@ class DB:
     def delete_user(self, user_id):
         return self.get_collection('users').delete_one({"_id": user_id})
 
+    def get_admins_id(self):
+        return self.get_collection('admins').find().distinct("discord_id")
     
     def create_group(self, group):
         admins_id = self.get_collection('admins').find().distinct('discord_id')
